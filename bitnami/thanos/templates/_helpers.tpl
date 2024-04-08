@@ -311,7 +311,7 @@ Return true if a configmap object should be created
 Return true if a configmap object should be created
 */}}
 {{- define "thanos.storegateway.createConfigmap" -}}
-{{- if and .Values.storegateway.config (not .Values.storegateway.existingConfigmap) }}
+{{- if or .Values.indexCacheConfig (and .Values.storegateway.config (not .Values.storegateway.existingConfigmap)) }}
     {{- true -}}
 {{- else -}}
 {{- end -}}

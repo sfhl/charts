@@ -232,7 +232,7 @@ spec:
               mountPath: /conf
             - name: data
               mountPath: /data
-            {{- if or .Values.storegateway.config .Values.storegateway.existingConfigmap }}
+            {{- if or .Values.indexCacheConfig (and .Values.storegateway.config (not .Values.storegateway.existingConfigmap)) }}
             - name: cache-config
               mountPath: /conf/cache
             {{- end }}
@@ -253,7 +253,7 @@ spec:
         {{- if .Values.storegateway.extraVolumes }}
         {{- include "common.tplvalues.render" (dict "value" .Values.storegateway.extraVolumes "context" $) | nindent 8 }}
         {{- end }}
-        {{- if or .Values.storegateway.config .Values.storegateway.existingConfigmap }}
+        {{- if or .Values.indexCacheConfig (and .Values.storegateway.config (not .Values.storegateway.existingConfigmap)) }}
         - name: cache-config
           configMap:
             name: {{ include "thanos.storegateway.configmapName" . }}
